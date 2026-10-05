@@ -1,0 +1,42 @@
+{
+  "tempHash": "007EE200640F15E5",
+  "tbluHash": "00BCA591C00A579D",
+  "patch": [
+    {
+      "AddEntity": [
+        "e5c19a8d87c74b20",
+        {
+          "parent": "b0906e8ecb81a1b0",
+          "name": "Default keybind mode marker",
+          "factory": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_basic.entitytemplate].pc_entitytype",
+          "blueprint": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_basic.entitytemplate].pc_entityblueprint",
+          "properties": {
+            "m_bValue": {
+              "type": "bool",
+              "value": true
+            },
+            "m_bAlwaysSignalOnSet": {
+              "type": "bool",
+              "value": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddPropertyAliasConnection": [
+            "WallCopyDefaultKeybinds",
+            {
+              "originalProperty": "m_bValue",
+              "originalEntity": "e5c19a8d87c74b20"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "patchVersion": 6
+}

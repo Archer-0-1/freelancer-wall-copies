@@ -1,0 +1,21 @@
+{
+  "tempHash": "007EE200640F15E5",
+  "tbluHash": "00BCA591C00A579D",
+  "patch": [
+    {
+      "SubEntityOperation": [
+        "82d0b27f8a85d759",
+        {
+          "SetPropertyValue": {
+            "property_name": "m_sweetPromptText",
+            "value": {
+              "resource": "[assembly:/localization/hitman6/conversations/ui/pro/gamemode_evergreen/evergreen_setpieces.sweetmenutext?/freelancer_keep_weapons_take_original.sweetline].pc_sweetline",
+              "flag": "5F"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "patchVersion": 6
+}

@@ -1,0 +1,657 @@
+{
+  "tempHash": "007EE200640F15E5",
+  "tbluHash": "00BCA591C00A579D",
+  "patch": [
+    {
+      "SubEntityOperation": [
+        "82d0b27f8a85d759",
+        {
+          "SetPropertyValue": {
+            "property_name": "m_sweetPromptText",
+            "value": {
+              "resource": "[assembly:/localization/hitman6/conversations/ui/pro/gamemode_evergreen/evergreen_setpieces.sweetmenutext?/freelancer_keep_weapons_take_copy.sweetline].pc_sweetline",
+              "flag": "5F"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "d61a2ce5a7b1575a",
+        {
+          "AddEventConnection": [
+            "OnTrue",
+            "SetTrue",
+            "4d8b820d75b03de6"
+          ]
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "d61a2ce5a7b1575a",
+        {
+          "AddEventConnection": [
+            "OnFalse",
+            "SetFalse",
+            "4d8b820d75b03de6"
+          ]
+        }
+      ]
+    },
+    {
+      "AddEntity": [
+        "4d8b820d75b03de6",
+        {
+          "parent": "0cd5d1c19b606cb9",
+          "name": "Selected gear wall item state",
+          "factory": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_basic.entitytemplate].pc_entitytype",
+          "blueprint": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_basic.entitytemplate].pc_entityblueprint",
+          "properties": {
+            "m_bValue": {
+              "type": "bool",
+              "value": false
+            },
+            "m_bAlwaysSignalOnSet": {
+              "type": "bool",
+              "value": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddInputCopyConnection": [
+            "WallCopyTakeOriginal",
+            "PickUp",
+            "ff28c16eb9073f6e"
+          ]
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddInputCopyConnection": [
+            "WallCopyTakeOriginal",
+            "PickedUp",
+            "0cd5d1c19b606cb9"
+          ]
+        }
+      ]
+    },
+    {
+      "AddEntity": [
+        "a47f7164c7ecf66c",
+        {
+          "parent": "0cd5d1c19b606cb9",
+          "name": "Selected wall item state observer",
+          "factory": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_poll.entitytemplate].pc_entitytype",
+          "blueprint": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_poll.entitytemplate].pc_entityblueprint",
+          "properties": {
+            "m_rValueEntity": {
+              "type": "SEntityTemplateReference",
+              "value": "4d8b820d75b03de6",
+              "postInit": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "4d8b820d75b03de6",
+        {
+          "AddEventConnection": [
+            "OnValue",
+            "Poll",
+            "a47f7164c7ecf66c"
+          ]
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddPropertyAliasConnection": [
+            "WallCopyPatchInstalled",
+            {
+              "originalProperty": "m_bValue",
+              "originalEntity": "4d8b820d75b03de6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "AddEntity": [
+        "096873ebebe13aad",
+        {
+          "parent": "b0906e8ecb81a1b0",
+          "name": "Freelancer copy carried-item condition",
+          "factory": "[modules:/zheroitemcondition.class].pc_entitytype",
+          "blueprint": "[modules:/zheroitemcondition.class].pc_entityblueprint",
+          "properties": {
+            "m_bCheckEquippedItem": {
+              "type": "bool",
+              "value": true
+            },
+            "m_bCheckInventory": {
+              "type": "bool",
+              "value": true
+            },
+            "m_ItemKeyToFind": {
+              "type": "SEntityTemplateReference",
+              "value": "ac6acba75274fcd2",
+              "postInit": true
+            },
+            "m_bCheckItemOnBack": {
+              "type": "bool",
+              "value": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "AddEntity": [
+        "6ce8fd65b4360de9",
+        {
+          "parent": "b0906e8ecb81a1b0",
+          "name": "Freelancer copy carried result",
+          "factory": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_basic.entitytemplate].pc_entitytype",
+          "blueprint": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_basic.entitytemplate].pc_entityblueprint",
+          "properties": {
+            "m_bValue": {
+              "type": "bool",
+              "value": false
+            },
+            "m_bAlwaysSignalOnSet": {
+              "type": "bool",
+              "value": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "AddEntity": [
+        "d9ec318f91ea23eb",
+        {
+          "parent": "b0906e8ecb81a1b0",
+          "name": "Freelancer copy query ready",
+          "factory": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_basic.entitytemplate].pc_entitytype",
+          "blueprint": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_basic.entitytemplate].pc_entityblueprint",
+          "properties": {
+            "m_bValue": {
+              "type": "bool",
+              "value": false
+            },
+            "m_bAlwaysSignalOnSet": {
+              "type": "bool",
+              "value": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "096873ebebe13aad",
+        {
+          "AddEventConnection": [
+            "OnTrue",
+            "SetTrue",
+            "6ce8fd65b4360de9"
+          ]
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "096873ebebe13aad",
+        {
+          "AddEventConnection": [
+            "OnTrue",
+            "SetTrue",
+            "d9ec318f91ea23eb"
+          ]
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "096873ebebe13aad",
+        {
+          "AddEventConnection": [
+            "OnFalse",
+            "SetFalse",
+            "6ce8fd65b4360de9"
+          ]
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "096873ebebe13aad",
+        {
+          "AddEventConnection": [
+            "OnFalse",
+            "SetTrue",
+            "d9ec318f91ea23eb"
+          ]
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddInputCopyConnection": [
+            "WallCopyResetCarried",
+            "SetFalse",
+            "d9ec318f91ea23eb"
+          ]
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddInputCopyConnection": [
+            "WallCopyResetCarried",
+            "SetFalse",
+            "6ce8fd65b4360de9"
+          ]
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddInputCopyConnection": [
+            "WallCopyCheckCarried",
+            "Get",
+            "096873ebebe13aad"
+          ]
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddPropertyAliasConnection": [
+            "WallCopyCarried",
+            {
+              "originalProperty": "m_bValue",
+              "originalEntity": "6ce8fd65b4360de9"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddPropertyAliasConnection": [
+            "WallCopyCarryQueryReady",
+            {
+              "originalProperty": "m_bValue",
+              "originalEntity": "d9ec318f91ea23eb"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "AddEntity": [
+        "e5c19a8d87c74b10",
+        {
+          "parent": "b0906e8ecb81a1b0",
+          "name": "Freelancer wall copy CopyRequested notification",
+          "factory": "[modules:/zshownotificationentity.class].pc_entitytype",
+          "blueprint": "[modules:/zshownotificationentity.class].pc_entityblueprint",
+          "properties": {
+            "m_sCategory": {
+              "type": "ZString",
+              "value": "ui_notification_category_default"
+            },
+            "m_sMessageKey": {
+              "type": "ZString",
+              "value": "UI_FKW_COPY_REQUESTED"
+            },
+            "m_rCategoryResource": {
+              "type": "ZRuntimeResourceID",
+              "value": {
+                "resource": "[assembly:/localization/hitman6/conversations/ui/pro/menutext.sweetmenutext?/ui_notification_category_default.sweetline].pc_sweetline",
+                "flag": "5F"
+              }
+            },
+            "m_rMessageResource": {
+              "type": "ZRuntimeResourceID",
+              "value": {
+                "resource": "[assembly:/localization/hitman6/conversations/ui/pro/menutext.sweetmenutext?/freelancer_keep_weapons_copy_requested.sweetline].pc_sweetline",
+                "flag": "5F"
+              }
+            },
+            "m_sChannel": {
+              "type": "ZString",
+              "value": "ui_notification_category_default"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddInputCopyConnection": [
+            "WallCopyNotifyCopyRequested",
+            "Trigger",
+            "e5c19a8d87c74b10"
+          ]
+        }
+      ]
+    },
+    {
+      "AddEntity": [
+        "e5c19a8d87c74b11",
+        {
+          "parent": "b0906e8ecb81a1b0",
+          "name": "Freelancer wall copy Blocked notification",
+          "factory": "[modules:/zshownotificationentity.class].pc_entitytype",
+          "blueprint": "[modules:/zshownotificationentity.class].pc_entityblueprint",
+          "properties": {
+            "m_sCategory": {
+              "type": "ZString",
+              "value": "ui_notification_category_default"
+            },
+            "m_sMessageKey": {
+              "type": "ZString",
+              "value": "UI_FKW_COPY_BLOCKED"
+            },
+            "m_rCategoryResource": {
+              "type": "ZRuntimeResourceID",
+              "value": {
+                "resource": "[assembly:/localization/hitman6/conversations/ui/pro/menutext.sweetmenutext?/ui_notification_category_default.sweetline].pc_sweetline",
+                "flag": "5F"
+              }
+            },
+            "m_rMessageResource": {
+              "type": "ZRuntimeResourceID",
+              "value": {
+                "resource": "[assembly:/localization/hitman6/conversations/ui/pro/menutext.sweetmenutext?/freelancer_keep_weapons_copy_blocked.sweetline].pc_sweetline",
+                "flag": "5F"
+              }
+            },
+            "m_sChannel": {
+              "type": "ZString",
+              "value": "ui_notification_category_default"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddInputCopyConnection": [
+            "WallCopyNotifyBlocked",
+            "Trigger",
+            "e5c19a8d87c74b11"
+          ]
+        }
+      ]
+    },
+    {
+      "AddEntity": [
+        "e5c19a8d87c74b12",
+        {
+          "parent": "b0906e8ecb81a1b0",
+          "name": "Freelancer wall copy AlreadyCarried notification",
+          "factory": "[modules:/zshownotificationentity.class].pc_entitytype",
+          "blueprint": "[modules:/zshownotificationentity.class].pc_entityblueprint",
+          "properties": {
+            "m_sCategory": {
+              "type": "ZString",
+              "value": "ui_notification_category_default"
+            },
+            "m_sMessageKey": {
+              "type": "ZString",
+              "value": "UI_FKW_ALREADY_CARRIED"
+            },
+            "m_rCategoryResource": {
+              "type": "ZRuntimeResourceID",
+              "value": {
+                "resource": "[assembly:/localization/hitman6/conversations/ui/pro/menutext.sweetmenutext?/ui_notification_category_default.sweetline].pc_sweetline",
+                "flag": "5F"
+              }
+            },
+            "m_rMessageResource": {
+              "type": "ZRuntimeResourceID",
+              "value": {
+                "resource": "[assembly:/localization/hitman6/conversations/ui/pro/menutext.sweetmenutext?/freelancer_keep_weapons_already_carried.sweetline].pc_sweetline",
+                "flag": "5F"
+              }
+            },
+            "m_sChannel": {
+              "type": "ZString",
+              "value": "ui_notification_category_default"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddInputCopyConnection": [
+            "WallCopyNotifyAlreadyCarried",
+            "Trigger",
+            "e5c19a8d87c74b12"
+          ]
+        }
+      ]
+    },
+    {
+      "AddEntity": [
+        "e5c19a8d87c74b13",
+        {
+          "parent": "b0906e8ecb81a1b0",
+          "name": "Freelancer wall copy Cooldown notification",
+          "factory": "[modules:/zshownotificationentity.class].pc_entitytype",
+          "blueprint": "[modules:/zshownotificationentity.class].pc_entityblueprint",
+          "properties": {
+            "m_sCategory": {
+              "type": "ZString",
+              "value": "ui_notification_category_default"
+            },
+            "m_sMessageKey": {
+              "type": "ZString",
+              "value": "UI_FKW_COPY_COOLDOWN"
+            },
+            "m_rCategoryResource": {
+              "type": "ZRuntimeResourceID",
+              "value": {
+                "resource": "[assembly:/localization/hitman6/conversations/ui/pro/menutext.sweetmenutext?/ui_notification_category_default.sweetline].pc_sweetline",
+                "flag": "5F"
+              }
+            },
+            "m_rMessageResource": {
+              "type": "ZRuntimeResourceID",
+              "value": {
+                "resource": "[assembly:/localization/hitman6/conversations/ui/pro/menutext.sweetmenutext?/freelancer_keep_weapons_cooldown.sweetline].pc_sweetline",
+                "flag": "5F"
+              }
+            },
+            "m_sChannel": {
+              "type": "ZString",
+              "value": "ui_notification_category_default"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddInputCopyConnection": [
+            "WallCopyNotifyCooldown",
+            "Trigger",
+            "e5c19a8d87c74b13"
+          ]
+        }
+      ]
+    },
+    {
+      "AddEntity": [
+        "e5c19a8d87c74b14",
+        {
+          "parent": "b0906e8ecb81a1b0",
+          "name": "Freelancer wall copy OriginalTakeRequested notification",
+          "factory": "[modules:/zshownotificationentity.class].pc_entitytype",
+          "blueprint": "[modules:/zshownotificationentity.class].pc_entityblueprint",
+          "properties": {
+            "m_sCategory": {
+              "type": "ZString",
+              "value": "ui_notification_category_default"
+            },
+            "m_sMessageKey": {
+              "type": "ZString",
+              "value": "UI_FKW_ORIGINAL_TAKE_REQUESTED"
+            },
+            "m_rCategoryResource": {
+              "type": "ZRuntimeResourceID",
+              "value": {
+                "resource": "[assembly:/localization/hitman6/conversations/ui/pro/menutext.sweetmenutext?/ui_notification_category_default.sweetline].pc_sweetline",
+                "flag": "5F"
+              }
+            },
+            "m_rMessageResource": {
+              "type": "ZRuntimeResourceID",
+              "value": {
+                "resource": "[assembly:/localization/hitman6/conversations/ui/pro/menutext.sweetmenutext?/freelancer_keep_weapons_original_take_requested.sweetline].pc_sweetline",
+                "flag": "5F"
+              }
+            },
+            "m_sChannel": {
+              "type": "ZString",
+              "value": "ui_notification_category_default"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddInputCopyConnection": [
+            "WallCopyNotifyOriginalTakeRequested",
+            "Trigger",
+            "e5c19a8d87c74b14"
+          ]
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddPropertyAliasConnection": [
+            "WallCopyPromptText",
+            {
+              "originalProperty": "m_sweetPromptText",
+              "originalEntity": "82d0b27f8a85d759"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddPropertyAliasConnection": [
+            "WallCopyMessageCopyRequested",
+            {
+              "originalProperty": "m_rMessageResource",
+              "originalEntity": "e5c19a8d87c74b10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddPropertyAliasConnection": [
+            "WallCopyMessageBlocked",
+            {
+              "originalProperty": "m_rMessageResource",
+              "originalEntity": "e5c19a8d87c74b11"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddPropertyAliasConnection": [
+            "WallCopyMessageAlreadyCarried",
+            {
+              "originalProperty": "m_rMessageResource",
+              "originalEntity": "e5c19a8d87c74b12"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddPropertyAliasConnection": [
+            "WallCopyMessageCooldown",
+            {
+              "originalProperty": "m_rMessageResource",
+              "originalEntity": "e5c19a8d87c74b13"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddPropertyAliasConnection": [
+            "WallCopyMessageOriginalTakeRequested",
+            {
+              "originalProperty": "m_rMessageResource",
+              "originalEntity": "e5c19a8d87c74b14"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "patchVersion": 6
+}

@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package the SMF mod
+        shell: pwsh
+        run: |
+          $manifest = Get-Content -LiteralPath manifest.json -Raw | ConvertFrom-Json
+          if ("v$($manifest.version)" -ne $env:GITHUB_REF_NAME) { throw "Tag and manifest version differ." }
+          $modName = "LeadingTiger9.FreelancerKeepWeapons"
+          $packageRoot = Join-Path $env:RUNNER_TEMP $modName
+          New-Item -ItemType Directory -Force -Path $packageRoot | Out-Null
+          $files = @(
+            "manifest.json", "project.json", "README.md", "native/THIRD-PARTY-NOTICES.txt",
+            "scripts/install-wall-copy.ts", "native/FreelancerOwnedWallCopy.dll",
+            "content/options/retention/wall-copies/chunk0/WallItemCopy.entity.patch.json",
+            "content/options/wall-copy-settings/default-keybinds/chunk0/WallSettings.entity.patch.json",
+            "content/options/wall-copy-settings/hide-notifications/chunk0/WallSettings.entity.patch.json",
+            "content/options/wall-copy-settings/prompt-copy-only/chunk0/WallSettings.entity.patch.json",
+            "content/options/wall-copy-settings/prompt-original-only/chunk0/WallSettings.entity.patch.json",
+            "content/options/wall-copy-settings/prompt-original-with-p-copy/chunk0/WallSettings.entity.patch.json"
+          )
+          foreach ($relative in $files) {
+            $source = Join-Path $env:GITHUB_WORKSPACE $relative
+            if (-not (Test-Path -LiteralPath $source -PathType Leaf)) { throw "Missing release file: $relative" }
+            $destination = Join-Path $packageRoot $relative
+            New-Item -ItemType Directory -Force -Path (Split-Path -Parent $destination) | Out-Null
+            Copy-Item -LiteralPath $source -Destination $destination
+          }
+          $zipName = "LeadingTiger9.FreelancerKeepWeapons.zip"
+          Compress-Archive -Path $packageRoot -DestinationPath $zipName -CompressionLevel Optimal -Force
+          $digest = (Get-FileHash -LiteralPath $zipName -Algorithm SHA256).Hash.ToLowerInvariant()
+          Set-Content -LiteralPath "$zipName.sha256" -Value "$digest  $zipName" -Encoding ascii
+      - uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            LeadingTiger9.FreelancerKeepWeapons.zip
+            LeadingTiger9.FreelancerKeepWeapons.zip.sha256

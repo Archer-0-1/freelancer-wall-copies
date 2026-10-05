@@ -1,0 +1,115 @@
+{
+    "$schema": "https://raw.githubusercontent.com/atampy25/simple-mod-framework/main/Mod%20Manager/src/lib/manifest-schema.json",
+    "version": "1.0.0",
+    "id": "LeadingTiger9.FreelancerKeepWeapons",
+    "name": "Freelancer Keep Weapons",
+    "description": "Companion-only Freelancer safehouse wall-copy option with duplicate protection, an SDK-rendered feedback popup and configurable wall shortcuts. Intended to complement Rogueless; compatibility is not yet verified.",
+    "authors": [
+        "LeadingTiger9"
+    ],
+    "frameworkVersion": "2.33.42",
+    "options": [
+        {
+            "name": "Spawn copy of owned wall item (experimental)",
+            "type": "checkbox",
+            "tooltip": "Use the regular gear-wall action to copy an owned, placed item. Press P for the original take-and-remove action, or use Default Keybinds to swap those actions. Already-carried non-tool items are blocked; the game toolbox flag keeps Freelancer tools unlimited. The SDK-rendered feedback popup and the P hint can each be hidden. Requires ZHM Mod SDK 4.1.1 core and the native helper.",
+            "contentFolders": [
+                "content/options/retention/wall-copies"
+            ],
+            "localisation": {
+                "english": {
+                    "UI_FKW_TAKE_WALL_ITEM_COPY": "Take a copy (P: take original)",
+                    "UI_FKW_TAKE_WALL_ITEM_COPY_NO_HINT": "Take a copy",
+                    "UI_FKW_TAKE_WALL_ITEM_ORIGINAL": "Take original",
+                    "UI_FKW_TAKE_WALL_ITEM_ORIGINAL_P_COPY": "Take original (P: copy item)",
+                    "UI_FKW_COPY_REQUESTED": "Copy requested",
+                    "UI_FKW_COPY_BLOCKED": "Copy unavailable.",
+                    "UI_FKW_ALREADY_CARRIED": "Already carried.",
+                    "UI_FKW_COPY_COOLDOWN": "Wait before copying again.",
+                    "UI_FKW_ORIGINAL_TAKE_REQUESTED": "Original take requested."
+                },
+                "french": {},
+                "italian": {},
+                "german": {},
+                "spanish": {},
+                "russian": {},
+                "chineseSimplified": {},
+                "chineseTraditional": {},
+                "japanese": {}
+            },
+            "localisedLines": {
+                "0033EDBB48F7D290": "UI_FKW_TAKE_WALL_ITEM_COPY",
+                "00F4D33BFBA13861": "UI_FKW_TAKE_WALL_ITEM_COPY_NO_HINT",
+                "00EECBE80A262DCF": "UI_FKW_TAKE_WALL_ITEM_ORIGINAL",
+                "00614EB9DAEF6CBE": "UI_FKW_TAKE_WALL_ITEM_ORIGINAL_P_COPY",
+                "006703A7B61641C9": "UI_FKW_COPY_REQUESTED",
+                "00A7CCA8F184EC74": "UI_FKW_COPY_BLOCKED",
+                "00E90ED1F5BB3489": "UI_FKW_ALREADY_CARRIED",
+                "00D3953C0E6BBAF8": "UI_FKW_COPY_COOLDOWN",
+                "0099090C877EF01E": "UI_FKW_ORIGINAL_TAKE_REQUESTED"
+            },
+            "scripts": [
+                "scripts/install-wall-copy.ts"
+            ]
+        },
+        {
+            "name": "Default Keybinds",
+            "type": "checkbox",
+            "enabledByDefault": false,
+            "tooltip": "When enabled, the normal wall Take/Enter action takes the original. Press P to copy it instead."
+        },
+        {
+            "name": "Hide notifications",
+            "type": "checkbox",
+            "enabledByDefault": false,
+            "tooltip": "Hide the SDK-rendered feedback popup for wall-copy results. This does not affect copying or taking."
+        },
+        {
+            "name": "Hide P key hint",
+            "type": "checkbox",
+            "enabledByDefault": false,
+            "tooltip": "Hide the P shortcut from the gear-wall prompt. The P shortcut still works."
+        },
+        {
+            "name": "Wall copy default-keybind marker",
+            "type": "conditional",
+            "condition": "\"Spawn copy of owned wall item (experimental)\" in ('LeadingTiger9.FreelancerKeepWeapons' of config.modOptions) and \"Default Keybinds\" in ('LeadingTiger9.FreelancerKeepWeapons' of config.modOptions)",
+            "contentFolders": [
+                "content/options/wall-copy-settings/default-keybinds"
+            ]
+        },
+        {
+            "name": "Wall copy hide-notifications marker",
+            "type": "conditional",
+            "condition": "\"Spawn copy of owned wall item (experimental)\" in ('LeadingTiger9.FreelancerKeepWeapons' of config.modOptions) and \"Hide notifications\" in ('LeadingTiger9.FreelancerKeepWeapons' of config.modOptions)",
+            "contentFolders": [
+                "content/options/wall-copy-settings/hide-notifications"
+            ]
+        },
+        {
+            "name": "Wall copy label - copy only",
+            "type": "conditional",
+            "condition": "\"Spawn copy of owned wall item (experimental)\" in ('LeadingTiger9.FreelancerKeepWeapons' of config.modOptions) and \"Hide P key hint\" in ('LeadingTiger9.FreelancerKeepWeapons' of config.modOptions) and not (\"Default Keybinds\" in ('LeadingTiger9.FreelancerKeepWeapons' of config.modOptions))",
+            "contentFolders": [
+                "content/options/wall-copy-settings/prompt-copy-only"
+            ]
+        },
+        {
+            "name": "Wall copy label - original with P copy",
+            "type": "conditional",
+            "condition": "\"Spawn copy of owned wall item (experimental)\" in ('LeadingTiger9.FreelancerKeepWeapons' of config.modOptions) and \"Default Keybinds\" in ('LeadingTiger9.FreelancerKeepWeapons' of config.modOptions) and not (\"Hide P key hint\" in ('LeadingTiger9.FreelancerKeepWeapons' of config.modOptions))",
+            "contentFolders": [
+                "content/options/wall-copy-settings/prompt-original-with-p-copy"
+            ]
+        },
+        {
+            "name": "Wall copy label - original only",
+            "type": "conditional",
+            "condition": "\"Spawn copy of owned wall item (experimental)\" in ('LeadingTiger9.FreelancerKeepWeapons' of config.modOptions) and \"Default Keybinds\" in ('LeadingTiger9.FreelancerKeepWeapons' of config.modOptions) and \"Hide P key hint\" in ('LeadingTiger9.FreelancerKeepWeapons' of config.modOptions)",
+            "contentFolders": [
+                "content/options/wall-copy-settings/prompt-original-only"
+            ]
+        }
+    ],
+    "updateCheck": "https://raw.githubusercontent.com/Archer-0-1/freelancer-wall-copies/main/updates.json"
+}
