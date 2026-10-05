@@ -1,0 +1,42 @@
+{
+  "tempHash": "007EE200640F15E5",
+  "tbluHash": "00BCA591C00A579D",
+  "patch": [
+    {
+      "AddEntity": [
+        "e5c19a8d87c74b21",
+        {
+          "parent": "b0906e8ecb81a1b0",
+          "name": "Hide notifications marker",
+          "factory": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_basic.entitytemplate].pc_entitytype",
+          "blueprint": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_basic.entitytemplate].pc_entityblueprint",
+          "properties": {
+            "m_bValue": {
+              "type": "bool",
+              "value": true
+            },
+            "m_bAlwaysSignalOnSet": {
+              "type": "bool",
+              "value": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "SubEntityOperation": [
+        "b0906e8ecb81a1b0",
+        {
+          "AddPropertyAliasConnection": [
+            "WallCopyHideNotifications",
+            {
+              "originalProperty": "m_bValue",
+              "originalEntity": "e5c19a8d87c74b21"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "patchVersion": 6
+}
