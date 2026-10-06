@@ -1,18 +1,21 @@
 {
     "$schema": "https://raw.githubusercontent.com/atampy25/simple-mod-framework/main/Mod%20Manager/src/lib/manifest-schema.json",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "id": "LeadingTiger9.FreelancerKeepWeapons",
     "name": "Freelancer Keep Weapons",
-    "description": "Companion-only Freelancer safehouse wall-copy option with duplicate protection, an SDK-rendered feedback popup and configurable wall shortcuts. Intended to complement Rogueless; compatibility is not yet verified.",
+    "description": "Copy owned gear from the Freelancer safehouse wall while leaving the original in place.",
     "authors": [
         "LeadingTiger9"
     ],
     "frameworkVersion": "2.33.42",
+    "loadAfter": [
+        "WINNODD.EGCheats"
+    ],
     "options": [
         {
             "name": "Spawn copy of owned wall item (experimental)",
             "type": "checkbox",
-            "tooltip": "Use the regular gear-wall action to copy an owned, placed item. Press P for the original take-and-remove action, or use Default Keybinds to swap those actions. Already-carried non-tool items are blocked; the game toolbox flag keeps Freelancer tools unlimited. The SDK-rendered feedback popup and the P hint can each be hidden. Requires ZHM Mod SDK 4.1.1 core and the native helper.",
+            "tooltip": "Use the gear-wall action to copy an owned, placed item. Press P to take the original; Default Keybinds swaps these actions. Already-carried ordinary gear cannot be copied. Requires ZHM Mod SDK 4.1.1 core and the included helper.",
             "contentFolders": [
                 "content/options/retention/wall-copies"
             ],
@@ -62,7 +65,7 @@
             "name": "Hide notifications",
             "type": "checkbox",
             "enabledByDefault": false,
-            "tooltip": "Hide the SDK-rendered feedback popup for wall-copy results. This does not affect copying or taking."
+            "tooltip": "Hide wall-copy status messages. Copying and taking are unaffected."
         },
         {
             "name": "Hide P key hint",

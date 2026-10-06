@@ -17,7 +17,11 @@ jobs:
         shell: pwsh
         run: |
           $manifest = Get-Content -LiteralPath manifest.json -Raw | ConvertFrom-Json
+          $updates = Get-Content -LiteralPath updates.json -Raw | ConvertFrom-Json
           if ("v$($manifest.version)" -ne $env:GITHUB_REF_NAME) { throw "Tag and manifest version differ." }
+          if ($updates.version -ne $manifest.version) { throw "Updater and manifest versions differ." }
+          if ([string]::IsNullOrWhiteSpace([string]$updates.changelog)) { throw "Updater changelog is empty." }
+          Set-Content -LiteralPath (Join-Path $env:GITHUB_WORKSPACE "release-notes.md") -Value ([string]$updates.changelog) -Encoding utf8NoBOM
           $modName = "LeadingTiger9.FreelancerKeepWeapons"
           $packageRoot = Join-Path $env:RUNNER_TEMP $modName
           New-Item -ItemType Directory -Force -Path $packageRoot | Out-Null
@@ -44,7 +48,8 @@ jobs:
           Set-Content -LiteralPath "$zipName.sha256" -Value "$digest  $zipName" -Encoding ascii
       - uses: softprops/action-gh-release@v2
         with:
-          generate_release_notes: true
+          generate_release_notes: false
+          body_path: release-notes.md
           files: |
             LeadingTiger9.FreelancerKeepWeapons.zip
             LeadingTiger9.FreelancerKeepWeapons.zip.sha256
