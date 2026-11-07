@@ -5,13 +5,12 @@ import { spawnSync } from "node:child_process";
 
 const payloadFile = "FreelancerOwnedWallCopy.dll";
 const payloadRelativePath = path.join("native", payloadFile);
-const payloadSha256 = "EDF69AE090BA08C441DD2CD7A95B147A741999B2D015283C781F716EF2959C5B";
+const payloadSha256 = "9AE7BEC68C07BE399B9F4C5EF6B7D1619C8B678F988C533595D09F6C068582E1";
 const sdkCoreFile = "ZHMModSDK.dll";
-const sdkCoreSha256 = "50D45AF5D3B6B345F6E6DECFB2E0DCA2F5F8EE353918BC01F4C03118744817A7";
+const sdkCoreSha256 = "0363619143D34DC99FD6EEEE84757DF28151C89E4658D87460876D557A2D8028";
 const gameImageName = "HITMAN3.exe";
 const backupSuffix = ".bak";
 const safehouseTempHash = "00A9B93A825F5BDC";
-const safehouseSubEntityIndex = 2217;
 const badPropertyId = 0xD95905B8;
 const correctPropertyId = 12580261;
 
@@ -65,20 +64,35 @@ function runResourceTool(runner: ProcessRunner, resourceToolPath: string, args: 
         throw new Error("ResourceTool failed (" + String(result.status) + "): " + (result.stderr ?? result.error?.message ?? "no diagnostic output"));
 }
 
-function requireExpectedMaterialProperty(decoded: any, expectedId: number): void {
-    const entity = decoded?.subEntities?.[safehouseSubEntityIndex];
-    if (!entity || !Array.isArray(entity.propertyValues))
-        throw new Error("Decoded safehouse TEMP no longer has the verified target entity at sub-entity index " + safehouseSubEntityIndex + ".");
+type PropertyMatch = { subEntityIndex: number; entry: any };
 
-    const property = entity.propertyValues.find((entry: any) => entry?.nPropertyID === expectedId);
-    if (!property || property.value?.$type !== "ZRuntimeResourceID" ||
-        property.value?.$val?.m_IDHigh !== 0 || property.value?.$val?.m_IDLow !== 4478)
-        throw new Error("Safehouse target property does not match the verified carpet material override; refusing to alter it.");
+// The sub-entity index of the carpet entity shifts between game builds (2217 on 3.280, 2219 on 3.290.1),
+// so the target is located by its property ID across the whole decoded TEMP instead of a fixed index.
+function findPropertyMatches(decoded: any, propertyId: number): PropertyMatch[] {
+    const matches: PropertyMatch[] = [];
+    const subEntities = decoded?.subEntities;
+    if (!Array.isArray(subEntities))
+        throw new Error("Decoded safehouse TEMP has no sub-entity list.");
+    subEntities.forEach((item: any, subEntityIndex: number) => {
+        if (!Array.isArray(item?.propertyValues)) return;
+        for (const entry of item.propertyValues)
+            if (entry?.nPropertyID === propertyId) matches.push({ subEntityIndex, entry });
+    });
+    return matches;
+}
 
-    const matches = decoded.subEntities.flatMap((item: any) => Array.isArray(item?.propertyValues) ? item.propertyValues : [])
-        .filter((entry: any) => entry?.nPropertyID === expectedId);
+function requireMaterialProperty(match: PropertyMatch): void {
+    const value = match.entry?.value;
+    if (value?.$type !== "ZRuntimeResourceID" || value?.$val?.m_IDHigh !== 0 || !Number.isInteger(value?.$val?.m_IDLow))
+        throw new Error("Safehouse target property is not a runtime resource reference; refusing to alter it.");
+}
+
+function requireExpectedMaterialProperty(decoded: any, expectedId: number): PropertyMatch {
+    const matches = findPropertyMatches(decoded, expectedId);
     if (matches.length !== 1)
         throw new Error("Decoded safehouse TEMP has an unexpected count of the target property ID (" + matches.length + ").");
+    requireMaterialProperty(matches[0]);
+    return matches[0];
 }
 
 export async function repairStagedSafehouseProperty(context: any, modAPI: any, deps?: TestDependencies): Promise<void> {
@@ -104,20 +118,21 @@ export async function repairStagedSafehouseProperty(context: any, modAPI: any, d
     try {
         execute(["HM3", "convert", "TEMP", stagedTemp, beforeJson]);
         const before = JSON.parse(fs.readFileSync(beforeJson, "utf8"));
-        const target = before?.subEntities?.[safehouseSubEntityIndex]?.propertyValues;
-        if (!Array.isArray(target))
-            throw new Error("Decoded safehouse TEMP is missing the verified target property list.");
-        const badMatches = target.filter((entry: any) => entry?.nPropertyID === badPropertyId);
-        const correctMatches = target.filter((entry: any) => entry?.nPropertyID === correctPropertyId);
+        const badMatches = findPropertyMatches(before, badPropertyId);
+        const correctMatches = findPropertyMatches(before, correctPropertyId);
 
         if (badMatches.length === 0 && correctMatches.length === 1) {
             requireExpectedMaterialProperty(before, correctPropertyId);
             await info(modAPI, "Safehouse carpet material property already has numeric ID " + correctPropertyId + ".");
             return;
         }
+        if (badMatches.length === 0 && correctMatches.length === 0) {
+            await info(modAPI, "Safehouse TEMP has no carpet material property to repair; numeric property repair skipped.");
+            return;
+        }
         if (badMatches.length !== 1 || correctMatches.length !== 0)
-            throw new Error("Decoded safehouse TEMP does not contain exactly one verified bad property ID at the target entity; refusing repair.");
-        requireExpectedMaterialProperty(before, badPropertyId);
+            throw new Error("Decoded safehouse TEMP does not contain exactly one verified bad property ID; refusing repair.");
+        const badMatch = requireExpectedMaterialProperty(before, badPropertyId);
 
         const originalBytes = fs.readFileSync(stagedTemp);
         if (originalBytes.subarray(0, 4).toString("ascii") !== "BIN1")
@@ -131,8 +146,11 @@ export async function repairStagedSafehouseProperty(context: any, modAPI: any, d
         fs.writeFileSync(candidateTemp, repaired.buffer, { flag: "wx" });
         execute(["HM3", "convert", "TEMP", candidateTemp, afterJson]);
         const after = JSON.parse(fs.readFileSync(afterJson, "utf8"));
-        requireExpectedMaterialProperty(after, correctPropertyId);
-        if (after.subEntities[safehouseSubEntityIndex].propertyValues.some((entry: any) => entry?.nPropertyID === badPropertyId))
+        const afterMatch = requireExpectedMaterialProperty(after, correctPropertyId);
+        if (afterMatch.subEntityIndex !== badMatch.subEntityIndex ||
+            JSON.stringify(afterMatch.entry.value) !== JSON.stringify(badMatch.entry.value))
+            throw new Error("Decoded candidate moved or altered the carpet material override; refusing repair.");
+        if (findPropertyMatches(after, badPropertyId).length !== 0)
             throw new Error("Decoded candidate still contains the bad property ID.");
 
         fs.renameSync(stagedTemp, stagedTemp + ".wall-copy-repair-original");
@@ -201,7 +219,7 @@ function preflight(context: any, deps?: TestDependencies) {
     requirePath(paths.sdkCorePath, "ZHM Mod SDK core");
     const sdkHash = sha256(paths.sdkCorePath);
     if (sdkHash !== sdkCoreSha256)
-        throw new Error("ZHM Mod SDK core hash mismatch (expected " + sdkCoreSha256 + ", found " + sdkHash + "); install the pinned SDK 4.1.1 core first.");
+        throw new Error("ZHM Mod SDK core hash mismatch (expected " + sdkCoreSha256 + ", found " + sdkHash + "); install the pinned SDK 4.2.1 core first.");
     requireGameClosed(deps?.spawnSync ?? spawnSync);
     if (fs.existsSync(paths.pluginPath) && sha256(paths.pluginPath) !== payloadSha256) {
         paths.backupPath = paths.backupPrefix + "." + sha256(paths.pluginPath) + backupSuffix;

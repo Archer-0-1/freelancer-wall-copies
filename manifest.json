@@ -1,13 +1,13 @@
 {
     "$schema": "https://raw.githubusercontent.com/atampy25/simple-mod-framework/main/Mod%20Manager/src/lib/manifest-schema.json",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "id": "LeadingTiger9.FreelancerKeepWeapons",
     "name": "Freelancer Keep Weapons",
     "description": "Copy owned gear from the Freelancer safehouse wall while leaving the original in place.",
     "authors": [
         "LeadingTiger9"
     ],
-    "frameworkVersion": "2.33.42",
+    "frameworkVersion": "2.33.45",
     "loadAfter": [
         "WINNODD.EGCheats"
     ],
@@ -15,7 +15,7 @@
         {
             "name": "Spawn copy of owned wall item (experimental)",
             "type": "checkbox",
-            "tooltip": "Use the gear-wall action to copy an owned, placed item. Press P to take the original; Default Keybinds swaps these actions. Already-carried ordinary gear cannot be copied. Requires ZHM Mod SDK 4.1.1 core and the included helper.",
+            "tooltip": "Use the gear-wall action to copy an owned, placed item. Press P to take the original; Default Keybinds swaps these actions. Already-carried ordinary gear cannot be copied. Requires ZHM Mod SDK 4.2.1 core and the included helper.",
             "contentFolders": [
                 "content/options/retention/wall-copies"
             ],

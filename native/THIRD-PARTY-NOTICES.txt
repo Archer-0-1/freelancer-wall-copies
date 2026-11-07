@@ -1,14 +1,14 @@
 Third-party notices for dependencies used by the native helper.
 
-ZHM Mod SDK 4.1.1 — Orfeas Zafeiris and contributors. Source: https://github.com/OrfeasZ/ZHMModSDK/tree/v4.1.1. Runtime and DevPkg: https://github.com/OrfeasZ/ZHMModSDK/releases/tag/v4.1.1.
-Dear ImGui 1.92.8 — Omar Cornut and contributors. Source: https://github.com/ocornut/imgui/tree/v1.92.8. SDK build port: https://github.com/OrfeasZ/ZHMModSDK/tree/v4.1.1/cmake/vcpkg-ports/imgui.
+ZHM Mod SDK 4.2.1 — Orfeas Zafeiris and contributors. Source: https://github.com/OrfeasZ/ZHMModSDK/tree/v4.2.1. Runtime and DevPkg: https://github.com/OrfeasZ/ZHMModSDK/releases/tag/v4.2.1.
+Dear ImGui 1.92.8 — Omar Cornut and contributors. Source: https://github.com/ocornut/imgui/tree/v1.92.8. SDK build port: https://github.com/OrfeasZ/ZHMModSDK/tree/v4.2.1/cmake/vcpkg-ports/imgui.
 fmt 12.2.0 — Victor Zverovich and contributors. Source: https://github.com/fmtlib/fmt/tree/12.2.0.
 ImPlot 1.0 — Evan Pezent and contributors. Source: https://github.com/epezent/implot/tree/v1.0.
 
-The dependency versions were checked against the official ZHM Mod SDK 4.1.1 DevPkg used for this helper.
+The dependency versions were checked against the official ZHM Mod SDK 4.2.1 DevPkg used for this helper.
 
 ======================================================================
-ZHM Mod SDK 4.1.1 licence notice
+ZHM Mod SDK 4.2.1 licence notice
 ======================================================================
 
 ZHMModSDK
